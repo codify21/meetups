@@ -7,3 +7,4 @@ class Meetup(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField()
     location = models.CharField(max_length=100,default='India')
+    image = models.ImageField(upload_to ='images')
