@@ -8,3 +8,6 @@ class Meetup(models.Model):
     description = models.TextField()
     location = models.CharField(max_length=100,default='India')
     image = models.ImageField(upload_to ='images')
+
+    def __str__(self):
+        return f'{self.title}-{self.slug}'
