@@ -9,7 +9,9 @@
 
 {% block main_heading%}{{ meetup_title}}{%endblock%}
 {% block header_content%}{{meetup_description}}{%endblock%}
+
 {% block body%} 
+{%if  meetup_found %}
         <article>
             <img src="" alt="">
             <section id="location">
@@ -31,4 +33,7 @@
                 <h2>Join Us!!</h2>
             </section>
         </article>
+    {%else%}
+        No meetup found, Sorry!!
+    {%endif%}
 {%endblock%}
