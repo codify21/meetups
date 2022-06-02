@@ -35,10 +35,11 @@ def meetup_details(request,meetup_slug):
         selected_item =  Meetup.objects.get(slug= meetup_slug)
         return render(request,'meetups/meetup-details.html',{
             # 'meetup_title':selected_item['title'],
-            'meetup_title':selected_item.title,
+            # 'meetup_title':selected_item.title,
             # 'meetup_description':selected_item['description']
-            'meetup_description':selected_item.description,
+            # 'meetup_description':selected_item.description,
             'meetup_found':True,
+            'meetup':selected_item,#interacting directly with model except passing values
         })
     except Exception as exc:
          return render(request,'meetups/meetup-details.html',{

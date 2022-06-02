@@ -24,6 +24,8 @@ class Meetup(models.Model):
     image = models.ImageField(upload_to ='images')
     participantss = models.ManyToManyField(Participant,blank=True,null=True)
     # Without null= True, if u have blank = True , for some fileds(like CharField) default empty values
+    organizer_email = models.EmailField()
+    date = models.DateField()
 
     def __str__(self):
         return f'{self.title}-{self.slug}'
