@@ -2,12 +2,21 @@ from django.db import models
 
 # Create your models here.
 
+class Location(models.Model):
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=200)
+
+    def __str__(self):
+        return  f'{self.name}  ({self.address})'
+
 class Meetup(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField()
-    location = models.CharField(max_length=100,default='India')
+    # location = models.CharField(max_length=100,default='India')
+    locationn = models.ForeignKey(Location, on_delete=models.CASCADE)#model.SET_NULL also can be used
     image = models.ImageField(upload_to ='images')
 
     def __str__(self):
         return f'{self.title}-{self.slug}'
+
