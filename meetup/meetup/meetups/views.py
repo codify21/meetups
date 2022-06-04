@@ -34,16 +34,24 @@ def meetup_details(request,meetup_slug):
     #     }
     try:
         selected_item =  Meetup.objects.get(slug= meetup_slug)
-        registration_form = RegistrationForm()
+        if request.method=='GET':          
+            registration_form = RegistrationForm()
+            
+        else:
+            registration_form = RegistrationForm(request.POST)
+            if registration_form.is_valid():
+                participant = registration_form.save()
+                selected_item.participantss.add(participant)
+                return render request,'meetups/meetup-details.html',{
         return render(request,'meetups/meetup-details.html',{
-            # 'meetup_title':selected_item['title'],
-            # 'meetup_title':selected_item.title,
-            # 'meetup_description':selected_item['description']
-            # 'meetup_description':selected_item.description,
-            'meetup_found':True,
-            'meetup':selected_item,#interacting directly with model except passing values,
-            'form': registration_form,
-        })
+                # 'meetup_title':selected_item['title'],
+                # 'meetup_title':selected_item.title,
+                # 'meetup_description':selected_item['description']
+                # 'meetup_description':selected_item.description,
+                'meetup_found':True,
+                'meetup':selected_item,#interacting directly with model except passing values,
+                'form': registration_form,
+            })
     except Exception as exc:
          return render(request,'meetups/meetup-details.html',{
           'meetup_found':False,
