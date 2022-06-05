@@ -68,7 +68,7 @@ def confirm_registration(request,meetup_slugg):
     })
 
 def login(request):
-    users= Users.objects.all()
+    
     # if request.method == 'POST':
     #     email = request.POST['email']
     #     password = request.POST['password']
@@ -77,6 +77,12 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             print(form.cleaned_data)
+            user=Users(
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'])
+            user.save()
+        users= Users.objects.all()
+        print(users)
     form = LoginForm()
 
     return render(request,'meetups/login.html',{'form':form})
