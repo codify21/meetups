@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Meetup,Participant
-from .forms import RegistrationForm
+from .models import Meetup,Participant,Users
+from .forms import RegistrationForm,LoginForm
 
 # Create your views here.
 
@@ -66,4 +66,19 @@ def confirm_registration(request,meetup_slugg):
     return render(request,'meetups/registration-success.html',{
         'organizer_email':meetup.organizer_email,
     })
+
+def login(request):
+    users= Users.objects.all()
+    # if request.method == 'POST':
+    #     email = request.POST['email']
+    #     password = request.POST['password']
+    #     print(email,'----',password)
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+    form = LoginForm()
+
+    return render(request,'meetups/login.html',{'form':form})
+
 
