@@ -12,13 +12,21 @@ class RegistrationForm(forms.Form):
     email = forms.EmailField(label = 'Your Email')
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label = 'Your Email')
-    password = forms.CharField(widget=forms.PasswordInput())
+    email = forms.EmailField(label = 'Email')
+    password = forms.CharField(initial='*******',widget=forms.PasswordInput())
 
-    # class Meta:
-    #     model = Users
-    #     fields = [ 'email', 'password'] 
+
+
+# class LoginForm(forms.ModelForm):
+
+#     class Meta:
+#         model = Users
+#         fields = [ 'email', 'password'] 
+#         labels = {
+#             'email':'Your Email',
+#             'password':'Password'
+#         }
     
-    #     widgets = {
-    #     'password': forms.PasswordInput()
-    #      }
+#         widgets = {
+#         'password': forms.PasswordInput()
+#          }

@@ -69,22 +69,61 @@ def confirm_registration(request,meetup_slugg):
 
 def login(request):
     
-    # if request.method == 'POST':
+    # if request.method == 'POST': Normal case
     #     email = request.POST['email']
     #     password = request.POST['password']
     #     print(email,'----',password)
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
-            user=Users(
-                email=form.cleaned_data['email'],
-                password=form.cleaned_data['password'])
-            user.save()
-        users= Users.objects.all()
-        print(users)
+
+    if request.method == 'POST': #For storing data using forms.Form
+        try:
+            form = LoginForm(request.POST) 
+            # form = LoginForm(request.POST,instance = existing_login  )
+            if form.is_valid():           
+                # user=Users(       #saving data to model
+                #     email=form.cleaned_data['email'],
+                #     password=form.cleaned_data['password'])
+                # user.save()
+                
+                online_user_email = form.cleaned_data['email'] 
+                online_user_password = form.cleaned_data['password']
+                # print(online_user_email,online_user_password)
+                if Users.objects.filter(email=online_user_email).exists():
+                        model_email = Users.objects.filter(email=online_user_email).values()
+                        model_password = model_email[0]['password']
+        
+                        if online_user_password==model_password:
+                            return index(request)
+                        else:
+                            return render(request,'meetups/login.html',{
+                                    'error':'Enter correct password',
+                                    'is_true':True,
+                                })
+                        
+                else:
+                    return render(request,'meetups/register.html',{'form':form})
+
+                # except Exception as e:
+                #     # print(e)
+                #     return render(request,'meetups/register.html',{'form':form})
+
+                return render(request,'meetups/login.html',{'form':form})
+        except Exceptions as exc:
+            print(exc)
+            return render(request,'meetups/login.html',{'form':form})
+
+
+
+    # if request.method == 'POST':#For storing data using forms.ModelForm
+    #     form = LoginForm(request.POST)# also u could modify easily using instance keyword  inside LoginForm
+    #     if form.is_valid():
+    #         print(form.cleaned_data)
+    #         form.save()
+
+   
+
     form = LoginForm()
 
     return render(request,'meetups/login.html',{'form':form})
 
-
+def register(request):
+    return render(request,'meetups/register.html',{'form':form})

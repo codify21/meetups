@@ -32,22 +32,28 @@
 
     <form action="" method="POST">
         {%  csrf_token %}
-        {% comment %} <div class="email">
+        <div class="email">
             <label for="email">Email Address</label>
             <div class="sec-2">
               <ion-icon name="mail-outline"></ion-icon>
-              <input type="email" name="email" placeholder="Username@gmail.com"/>
+              {% comment %} <input type="email" name="email" placeholder="Username@gmail.com"/> {% endcomment %}
+              {{form.email}}
             </div>
           </div>
           <div class="password">
             <label for="password">Password</label>
             <div class="sec-2">
               <ion-icon name="lock-closed-outline"></ion-icon>
-              <input class="pas" type="password" name="password" placeholder="············"/>
+              {% comment %} <input class="pas" type="password" name="password" placeholder="············"/> {% endcomment %}
+              {{form.password}}
+              {%if is_true%}
+                {{error}}
+              {%endif%}
               <ion-icon class="show-hide" name="eye-outline"></ion-icon>
             </div>
-          </div> {% endcomment %}
-          {{form}}
+          </div> 
+          
+          
           <button class="login" action='POST'>Login</button>
     </form>
     

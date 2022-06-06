@@ -7,7 +7,8 @@ class Users(models.Model):
     password = models.CharField(max_length=50)
 
     def __str__(self):
-        return  f'{self.email}'
+        return  f'{self.email}--{self.password}'
+
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
