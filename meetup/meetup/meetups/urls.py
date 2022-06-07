@@ -6,8 +6,8 @@ urlpatterns = [
     # path('meetups/success',views.confirm_registration,name='confirm-registration'),
     # path('meetups/<slug:meetup_slug>',views.meetup_details,name='meetup-detail')
     path('',views.login,name='login'),
-    path('home/',views.index,name='all-meetups'),
-    path('home/register/',views.register,name='register'),
+    path('register',views.register,name='register'),
+    path('home',views.index,name='all-meetups'),
     path('<slug:meetup_slugg>/success',views.confirm_registration,name='confirm-registration'),
     path('<slug:meetup_slug>',views.meetup_details,name='meetup-detail')
 

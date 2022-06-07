@@ -116,7 +116,15 @@
     width: 200%;
     text-align: right;
   }
-  
+
+  .screen-1 .register {
+    padding: 1em;
+    background: #3e4684;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+  }
   button {
     cursor: pointer;
   }
