@@ -9,6 +9,9 @@ class Users(models.Model):
     def __str__(self):
         return  f'{self.email}--{self.password}'
 
+    class Meta:
+        verbose_name_plural = 'User Details'
+
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
