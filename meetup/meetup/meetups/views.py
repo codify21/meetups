@@ -1,8 +1,7 @@
-from django.shortcuts import render,redirect,reverse
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Meetup,Participant,Users
 from .forms import RegistrationForm,LoginForm
-
 
 # Create your views here.
 
@@ -25,7 +24,7 @@ def index(request):
     #     }
     # ]
     return render(request,'meetups/index.html',{
-        # 'show_meetups': True,
+        'show_meetups': True,
         'meetups':meetups})
 
 def meetup_details(request,meetup_slug):
@@ -44,7 +43,7 @@ def meetup_details(request,meetup_slug):
             if registration_form.is_valid():
                 # participant = registration_form.save()
                 user_email = registration_form.cleaned_data['email']
-                participant,_ = Participant.objects.get_or_create(email=user_email)#return a tuple value
+                participant,_ = Participant.objects.get_or_create(email=user_email)
                 print(participant,'---')
                 selected_item.participantss.add(participant)
                 return redirect('confirm-registration',meetup_slugg= meetup_slug)
@@ -93,28 +92,21 @@ def login(request):
                         model_password = model_email[0]['password']
         
                         if online_user_password==model_password:
-                            return redirect('all-meetups')
+                            return index(request)
                         else:
                             return render(request,'meetups/login.html',{
-                                'form':form,
-                                'error':'Enter correct password',
-                                'is_true':True,
+                                    'error':'Enter correct password',
+                                    'is_true':True,
                                 })
                         
                 else:
-                    # register(request,form)
-                    return render(request,'meetups/login.html',{
-                        'form':form,
-                        'is_new':True,
-                        'value':'Please create ur new account via Sign Up',
-                        })
-            else:
-                    # register(request,form)
-                    return render(request,'meetups/login.html',{
-                        'form':form,
-                        'is_new':True,
-                        'value':'Enter correct credentials',
-                        })
+                    return render(request,'meetups/register.html',{'form':form})
+
+                # except Exception as e:
+                #     # print(e)
+                #     return render(request,'meetups/register.html',{'form':form})
+
+                return render(request,'meetups/login.html',{'form':form})
         except Exceptions as exc:
             print(exc)
             return render(request,'meetups/login.html',{'form':form})
@@ -134,37 +126,4 @@ def login(request):
     return render(request,'meetups/login.html',{'form':form})
 
 def register(request):
-
-    if request.method == 'POST': #For storing data using forms.Form
-        try:
-            form = LoginForm(request.POST) 
-            
-            # form = LoginForm(request.POST,instance = existing_login  )
-            if form.is_valid():   
-                print(form.cleaned_data)  
-                if Users.objects.filter(email=form.cleaned_data['email'] ).exists():#verifying preexisting email
-                        print('exists')
-                        return render(request,'meetups/register.html',{
-                        'form':form,
-                        'is_true':True,
-                        'value':'User already present .Please Sign in',
-                        })
-                else:
-                    user=Users(       #saving data to model
-                        email=form.cleaned_data['email'],
-                        password=form.cleaned_data['password'])
-                    user.save()
-                    return render(request,'meetups/register.html',{
-                        'form':form,
-                        'is_true':True,
-                        'value':'User created successfully. Please Sign in',
-                        })
-        except Exception as exc:
-             print(exc)
-             return render(request,'meetups/register.html',
-             {'form':form,
-             'is_true':True,
-             'value':'Something went wrong!! Try Again'
-             })
-    form = LoginForm()
     return render(request,'meetups/register.html',{'form':form})

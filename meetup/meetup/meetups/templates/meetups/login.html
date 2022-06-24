@@ -29,7 +29,7 @@
         <polygon style="stroke: rgb(0, 0, 0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255, 255, 255); fill-rule: nonzero; opacity: 1" vector-effect="non-scaling-stroke" points="-50,-50 -50,50 50,50 50,-50 "></polygon>
       </g>
     </svg>
-    {% comment %} {%url "all-meetups"%} {% endcomment %}
+
     <form action="" method="POST">
         {%  csrf_token %}
         <div class="email">
@@ -46,20 +46,17 @@
               <ion-icon name="lock-closed-outline"></ion-icon>
               {% comment %} <input class="pas" type="password" name="password" placeholder="············"/> {% endcomment %}
               {{form.password}}
+              {%if is_true%}
+                {{error}}
+              {%endif%}
               <ion-icon class="show-hide" name="eye-outline"></ion-icon>
             </div>
           </div> 
-          {%if is_new%}
-          {{value}}
-      {%endif%}
-          {%if is_true%}
-          {{error}}
-          {{value}}
-      {%endif%}
+          
           
           <button class="login" action='POST'>Login</button>
     </form>
     
-    <div class="footer"><span class='sign'><a href="{%url 'register' %}">Sign up</a></span><span class='forgot'><a href="{%url 'register' %}">Forgot Password?</span></div>
+    <div class="footer"><span class='sign'>Sign up</span><span class='forgot'>Forgot Password?</span></div>
   </div>
   {%endblock%}
