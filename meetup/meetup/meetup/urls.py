@@ -22,7 +22,8 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',RedirectView.as_view(url='/meetups')),
-    path('meetups/',include('meetups.urls'))
+    path('meetups/',include('meetups.urls')),
+    path('snippets/', include('snippets.urls')),
 
 ]+ static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)
 #path which browser can send request to , we serve a certain files in folder
