@@ -9,13 +9,25 @@ from django.contrib.auth.models import User
 #     linenos = serializers.BooleanField(required=False)
 #     language = serializers.ChoiceField(choices=LANGUAGE_CHOICES, default='python')
 #     style = serializers.ChoiceField(choices=STYLE_CHOICES, default='friendly')
-class SnippetSerializer(serializers.ModelSerializer):
+
+# class SnippetSerializer(serializers.ModelSerializer):
+#     owner = serializers.ReadOnlyField(source='owner.username')
+#     # owner = Snippet.objects.all().username
+#     print(owner,"owner")
+#     class Meta:
+#         model = Snippet
+        
+#         fields = ['id', 'title', 'code', 'linenos', 'language', 'style','owner']
+#         # exclude = ('language',)
+
+class SnippetSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    highlight = serializers.HyperlinkedIdentityField(view_name='snippet-highlight', format='html')
+
     class Meta:
         model = Snippet
-        
-        fields = ['id', 'title', 'code', 'linenos', 'language', 'style','owner']
-        # exclude = ('language',)
+        fields = ['url', 'id', 'highlight', 'owner',
+                  'title', 'code', 'linenos', 'language', 'style']
 
     def create(self, validated_data):
         """
@@ -27,7 +39,12 @@ class SnippetSerializer(serializers.ModelSerializer):
         """
         Update and return an existing `Snippet` instance, given the validated data.
         """
-        instance.title = validated_data.get('title', instance.title)
+        # print(instance.title,"before")
+        # instance.title = validated_data.get('title', instance.title)
+        instance.title = validated_data.get('title')#both working same
+
+        # print(instance.title,"after")
+
         instance.code = validated_data.get('code', instance.code)
         instance.linenos = validated_data.get('linenos', instance.linenos)
         instance.language = validated_data.get('language', instance.language)
@@ -35,9 +52,16 @@ class SnippetSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class UserSerializer(serializers.ModelSerializer):
-    snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+# class UserSerializer(serializers.ModelSerializer):
+#     snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+
+#     class Meta:
+#         model = User
+#         fields = ['id', 'username', 'snippets']
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    snippets = serializers.HyperlinkedRelatedField(many=True, view_name='snippet-detail', read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'snippets']
+        fields = ['url', 'id', 'username', 'snippets']
