@@ -18,12 +18,15 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic.base import RedirectView 
+from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',RedirectView.as_view(url='/meetups')),
-    path('meetups/',include('meetups.urls')),
-    path('snippets/', include('snippets.urls')),
+    # path('admin/', admin.site.urls),
+    # path('',RedirectView.as_view(url='/meetups')),
+    # path('meetups/',include('meetups.urls')),
+    path('', include('snippets.urls')),
+    path('api-auth/', include('rest_framework.urls')),
 
-]+ static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)
+]
+# + static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)
 #path which browser can send request to , we serve a certain files in folder
